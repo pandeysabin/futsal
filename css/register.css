@@ -1,0 +1,29 @@
+.register{
+    margin: 300px 0px 0px 600px;
+    height: 300px;
+    width: 500px;
+    background-color: hsla(0, 0%, 98%, 0.952);
+    border-radius: 25px;
+}
+.register h3{
+    text-align: center;
+}
+.register input[type=text], input[type=password]{
+    /* align-items: center; */
+    border-radius: 5px;
+    width: 250px;
+    border: none;   
+}
+
+.register input[type=submit]{
+     position: relative;
+     left: 220px;
+     color: white;
+     width: 80px;
+     border-radius: 50px;     
+     background-color: #2d2bcc;
+}
+
+.register input[type=submit]:hover{
+    cursor: pointer;
+}
