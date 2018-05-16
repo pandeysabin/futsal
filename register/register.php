@@ -30,7 +30,7 @@
 					</select>
 				</span>
 				<div class="date">
-					Nepal(NP)<img src="images/nepal.jpg" width="20px" />
+					Nepal(NP)<img src="../images/nepal.jpg" width="20px" />
 					<div id="dt">
 						
 					</div>

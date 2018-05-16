@@ -97,7 +97,7 @@
 <html lang="en">
 	<head>
 		<title>No.1 Futsal online Booking website for Kathmandu Valley</title>
-		<link rel="stylesheet" type="text/css" href="css/lightbox.css">
+		<link rel="stylesheet" type="text/css" href="css/lightbox.min.css">
 		<link rel="stylesheet" type="text/css" href="css/home.css">	
 	</head>
 	<body>	
@@ -276,11 +276,10 @@
 				<p>Kantipur Mall, Lalitpur</p>
 			</div>
 		</div>	
+
 		<script type="text/javascript" src="js/home.js"></script>
-
-		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-
-		<script type="text/javascript" src="js/lightbox.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/lightbox.min.js"></script>
 
 	</body>
 </html>
