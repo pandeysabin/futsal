@@ -3,7 +3,7 @@
 ?>
 
 <!-- <?php 
-
+	
 	$ip_address = $_SERVER["REMOTE_ADDR"];
 	// $user_agent = $_SERVER['HTTP_USER_AGENT'];
 	// $page_name = $_SERVER["SCRIPT_NAME"]; 
