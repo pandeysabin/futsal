@@ -76,7 +76,7 @@
 
 		<div class="login-form">
 			<h3>Login</h3>
-				<form action="" method="POST">
+				<form action="../dashboard/home.php" method="POST">
 					<table>	
 						<tr>
 							<td><label for="">Username</label></td>
