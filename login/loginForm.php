@@ -82,7 +82,7 @@
 							<td><label for="">Username</label></td>
 						</tr>											
 						<tr>
-							<td><input id="uname" type="text" value="" name="uname" required="required" placeholder="Enter your username"></td>
+							<td><input id="uname" type="text" value=" " name="uname" required="required" placeholder="Enter your username"></td>
 						</tr>
 						<tr>
 							<td><label for="">Password</label></td>
