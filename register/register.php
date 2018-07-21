@@ -36,7 +36,7 @@
 					</div>
 				</div>
 				<span id="member">		
-					<a href="../login/login.php">Login</a>
+					<a href="../login/loginForm.php">Login</a>
 				</span>
 			</div>
 			<div style="font-size:16px;" class="nav">

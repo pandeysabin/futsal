@@ -1,11 +1,10 @@
 <?php
-
-	require 'connection/connection.php';
+	require 'core.inc.php';
+	// require 'connection/connection.php';
 
 	$user_ip = $_SERVER['REMOTE_ADDR'];
 
-	function ip_add() 
-	{
+	function ip_add() {
 		global $conn, $user_ip;	
 		$ip = $user_ip;
 		$query = "INSERT INTO `hits_ip` VALUES('$ip')";
@@ -89,9 +88,19 @@
 		}
 	}
 
-
-
 ?>
+
+// <?php
+	
+// 	if (isset($_SESSION['user_id'])&&!empty($_SESSION['user_id'])){
+// 		echo "You're successfully logged in";
+// 	}
+// 	else {
+// 		include 'login/loginForm.php';
+// 	}
+
+// ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +132,7 @@
 					</div>
 				</div>
 				<span id="member">		
-					<a href="login/login.php">Login</a>
+					<a href="login/loginForm.php">Login</a>
 					<a href="register/register.php">Register</a>
 				</span>
 			</div>

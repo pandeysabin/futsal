@@ -1,23 +1,8 @@
 <?php
-	require '../connection/connection.php';
+		require_once '../connection/connection.php';
 ?>
 
-<!-- <?php 
-	
-	$ip_address = $_SERVER["REMOTE_ADDR"];
-	// $user_agent = $_SERVER['HTTP_USER_AGENT'];
-	// $page_name = $_SERVER["SCRIPT_NAME"]; 
-	// $query_string = $_SERVER["QUERY_STRING"];
-	// echo $ip_address . "<br />";	
-	// echo $user_agent . "<br />";
-	// echo $page_name . "<br />";
-	// echo $query_string;
 
-	// function update($)
-
-	
-
-?> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -76,25 +61,26 @@
 
 		<div class="login-form">
 			<h3>Login</h3>
-				<form action="../dashboard/home.php" method="POST">
+				<form  action="authentication.php" method = "post">
 					<table>	
-						<tr>
-							<td><label for="">Username</label></td>
-						</tr>											
-						<tr>
-							<td><input id="uname" type="text" value=" " name="uname" required="required" placeholder="Enter your username"></td>
-						</tr>
-						<tr>
-							<td><label for="">Password</label></td>
-						</tr>
-						<tr>
-							<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value="" required="required"></td>
-						</tr>
-						<tr>
-							<td><input type="submit" value="Let me in"></td> 
-						</tr>
+							<tr>
+								<td><label for="">Username</label></td>
+							</tr>										
+							<tr>
+								<td><input id="uname" type="text" value="" name="uname" required="required" placeholder="Enter your username" /></td>
+							</tr>
+							<tr>
+								<td><label for="">Password</label></td>
+							</tr>
+							<tr>
+								<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value="" required="required" /></td>
+							</tr>
+							<tr>
+								<td><input type="submit" name="submit" value="Let me in" /></td>
+							</tr>
 					</table>
 				</form>
+			
 		</div>
 
         <div class="bottom">
