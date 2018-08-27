@@ -1,5 +1,30 @@
 <?php 
-	require "../connection/connection.php";
+	require "../core.inc.php";
+
+	if(loggedin() == true) {
+		header('location:../message.php');
+	}
+	else if(loggedin() != true) {
+?>
+
+
+<?php 
+	if(isset($_POST['sbmt'])) {
+		$firstname = $_POST['fname'];
+		$middlename = $_POST['mname'];
+		$lastname = $_POST['lname'];
+		$password = $_POST['pwd'];
+		$confirmpassword = $_POST['cpwd'];
+		if(!empty($firstname)&&!empty($middlename)&&!empty($lastname)&&!empty($password)&&!empty($confirmpassword)) {
+			echo 'Yes';
+		}
+		else {
+			echo 'Please fill up the form correctly';
+		}
+	}
+	else {
+		mysqli_error($conn);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -57,44 +82,45 @@
    
     <div class="register">
         <h3>Register</h3>
-        <form action="" method="POST">
-            <table>
-                <tr>
-                    <td>Firstname</td>
-                </tr>
-				<tr>
-					<td><input id="fname" type="text" name="fname" placeholder="Enter your firstname" required="required" /></td>
-				</tr>
-				<tr>
-					<td>Middlename</td>
-				</tr>
-				<tr>
-					<td><input id="mname" type="text" name="mname" placeholder="Enter your middlename" /></td>
-				</tr>
-				<tr>
-					<td>Lastname</td>
-				</tr>
-				<tr>
-					<td><input id="lname" type="text" name="lname" placeholder="Enter your lastname" required="required" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-				</tr>
-				<tr>
-					<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" required="required" /></td>
-				</tr>
-				<tr>
-					<td>Confirm password</td>
-				</tr>
-				<tr>
-					<td><input id="cpwd" type="password" name="cpwd" placeholder="Confirm your password" required="required" /></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="sbmt" value="Register" /></td>
-				</tr>
-            </table>
-        </form>
-    </div>
+			<form action="" method="POST">
+				<table>
+					<tr>
+						<td>Firstname</td>
+					</tr>
+					<tr>
+						<td><input id="fname" type="text" name="fname" value="" placeholder="Enter your firstname" required="required" /></td>
+					</tr>
+					<tr>
+						<td>Middlename</td>
+					</tr>
+					<tr>
+						<td><input id="mname" type="text" name="mname" placeholder="Enter your middlename" /></td>
+					</tr>
+					<tr>
+						<td>Lastname</td>
+					</tr>
+					<tr>
+						<td><input id="lname" type="text" name="lname" placeholder="Enter your lastname" required="required" /></td>
+					</tr>
+					<tr>
+						<td>Password</td>
+					</tr>
+					<tr>
+						<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" required="required" /></td>
+					</tr>
+					<tr>
+						<td>Confirm password</td>
+					</tr>
+					<tr>
+						<td><input id="cpwd" type="password" name="cpwd" placeholder="Confirm your password" required="required" /></td>
+					</tr>
+					<tr>
+						<td><input type="submit" name="sbmt" value="Register" /></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+    
 
     <div class="bottom">
         <div style=" width: 1200px;margin: auto;height: 200px">
@@ -119,3 +145,9 @@
     <script type="text/javascript" src="../js/register.js"></script>
 </body>
 </html>
+<?php
+		}
+		else {
+			echo mysqli_error($conn);
+		}
+?>

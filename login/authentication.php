@@ -6,11 +6,11 @@
 <?php 
 	if (isset($_POST['submit'])) {
         if(!empty($_POST['uname']&&!empty($_POST['pwd']))) {
-            $username = $_POST['uname'];
-            $password = $_POST['pwd'];
+            $username = mysqli_real_escape_string($conn, $_POST['uname']);
+            $password = mysqli_real_escape_string($conn, $_POST['pwd']);
             
             $password_hash = sha1($password);
-            $query = "SELECT id FROM `users` WHERE user_name='$username' AND pwd='$password_hash'";
+            $query = "SELECT `id` FROM `users` WHERE user_name='$username' AND pwd='$password_hash'";
             
             $query_run = mysqli_query($conn, $query);
             
@@ -25,7 +25,7 @@
                     while($array = mysqli_fetch_assoc($query_run)) {
                         $user_id = $array['id'];
 						$_SESSION['user_id'] = $user_id;
-						header ('location:../second.php');
+						header ('location:../first.php');
                     }
                 }
                 else {
@@ -40,5 +40,8 @@
         else {
             echo "Please fill up the form properly.";
         }
-	}
+    }
+    else {
+        echo "Please ";
+    }
 ?>

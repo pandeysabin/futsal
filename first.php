@@ -87,19 +87,7 @@
 			ip_add();
 		}
 	}
-
 ?>
-
-// <?php
-	
-// 	if (isset($_SESSION['user_id'])&&!empty($_SESSION['user_id'])){
-// 		echo "You're successfully logged in";
-// 	}
-// 	else {
-// 		include 'login/loginForm.php';
-// 	}
-
-// ?>
 
 
 <!DOCTYPE html>
@@ -107,6 +95,7 @@
 	<head>
 		<title>No.1 Futsal online Booking website for Kathmandu Valley</title>
 		<link rel="stylesheet" type="text/css" href="css/lightbox.min.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/home.css">	
 	</head>
 	<body>	
@@ -127,14 +116,48 @@
 				</span>
 				<div class="date">
 					Nepal(NP)<img src="images/nepal.jpg" width="20px" />
-					<div id="dt">
-						
-					</div>
 				</div>
-				<span id="member">		
-					<a href="login/loginForm.php">Login</a>
-					<a href="register/register.php">Register</a>
-				</span>
+
+
+
+				<!-- <span id="member">		
+					<a href=""><?php $firstname ?></a>
+				</span> -->
+<?php
+				if(loggedin()) {
+					$query = "SELECT `first_name` FROM `users` WHERE `id` = '".$_SESSION['user_id']."'";
+					if($query_run = mysqli_query($conn, $query)) {
+						if($mysqli_num_rows = mysqli_num_rows($query_run)) {
+							while($array = mysqli_fetch_assoc($query_run)) {
+								$firstname = $array['first_name'];
+?>
+								<div id="member">
+									<div class="btn-group user">
+									<button type="button" class="btn btn-danger dropdown-toggle user-name" data-toggle="dropdown"><a href=""><?php echo $firstname ?></a></button>		
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">Settings</a>
+										<div class="dropdown-divider"></div>
+											<a class="dropdown-item" href="#">Logout</a>
+										</div>
+									</div>
+								</div>
+<?php 
+							}
+						}
+					}
+				}
+				else if(!loggedin()) {
+?>
+					<div id="member">
+						<a class="btn btn-primary login" href="login/loginForm.php">Login</a>
+						<a class="btn btn-primary" href="register/register.php">Register</a>
+					</div>
+<?php
+				}
+				else {
+					echo mysqli_error($conn);
+				}
+?>
 			</div>
 			<div style="font-size:16px;" class="nav">
 				<ul>
@@ -288,6 +311,7 @@
 
 		<script type="text/javascript" src="js/home.js"></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript" src="js/lightbox.min.js"></script>
 
 	</body>
