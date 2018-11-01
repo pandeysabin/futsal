@@ -1,15 +1,16 @@
 <?php
-	require 'core.inc.php';
+	require 'php/core.inc.php';
 	//require 'connection/connection.php';
 
-	$user_ip = $_SERVER['REMOTE_ADDR'];
+	$userIp = $_SERVER['REMOTE_ADDR'];
 
-	function ip_add() {
-		global $conn, $user_ip;	
-		$ip = $user_ip;
-		$query = "INSERT INTO `hits_ip` VALUES('$ip')";
-		$query_run = mysqli_query($conn, $query);
-		if($query_run)
+	function ipAdd() 
+	{
+		global $conn, $userIp;	
+		$ip = $userIp;
+		$query = "INSERT INTO `hitsIp` VALUES('$ip')";
+		$queryRun = mysqli_query($conn, $query);
+		if($queryRun)
 		{
 			//
 		}
@@ -20,22 +21,23 @@
 	}
 
 	
-	function ip_check(){
-		global $conn, $user_ip;
-		$query = "SELECT `ip` FROM `hits_ip`";
-		$query_run = mysqli_query($conn, $query);
-		if(($query_run)) 
+	function ipCheck()
 		{
-			if(mysqli_num_rows($query_run) == NULL) 
+		global $conn, $userIp;
+		$query = "SELECT `ip` FROM `hitsIp`";
+		$queryRun = mysqli_query($conn, $query);
+		if(($queryRun)) 
+		{
+			if(mysqli_num_rows($queryRun) == NULL) 
 			{
 				return true;
 			} 
 			else 
 			{
-				while($row = mysqli_fetch_assoc($query_run)) 
+				while($row = mysqli_fetch_assoc($queryRun)) 
 				{
 					$ip = $row['ip'];
-					if($user_ip == $ip) 
+					if($userIp == $ip) 
 					{
 						return false;
 					}
@@ -50,19 +52,19 @@
 		
 	}
 
-	function update_count() 
+	function updateCount() 
 	{
 		global $conn;
-		$query = "SELECT counts FROM hits_count";
-		$query_run = mysqli_query($conn, $query);
-		if($query_run) 
+		$query = "SELECT `counts` FROM `hitsCount`";
+		$queryRun = mysqli_query($conn, $query);
+		if($queryRrun) 
 		{
-			$row = mysqli_fetch_assoc($query_run);
+			$row = mysqli_fetch_assoc($queryRun);
 			$count = $row['counts'];
 			$count = $count + 1;
-			$query1 = "UPDATE hits_count SET counts = $count";
-			$query_run1 = mysqli_query($conn, $query1);
-			if($query_run1) 
+			$query1 = "UPDATE hitsCount SET counts = $count";
+			$queryRun1 = mysqli_query($conn, $query1);
+			if($queryRun1) 
 			{
 				return true;
 			}
@@ -80,11 +82,11 @@
 	// echo phpinfo();	 		
 
 
-	if(ip_check()) 
+	if(ipCheck()) 
 	{
-		if(update_count())
+		if(updateCount())
 		{
-			ip_add();
+			ipAdd();
 		}
 	}
 ?>
@@ -97,17 +99,19 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>No.1 Futsal online Booking website for Kathmandu Valley</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/lightbox.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/home.css">	
+		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/lightbox.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/home.css">	
 	</head>
-	<body>	
+	<body>
+		
+
 		<div class="wrapper">
 			<div class="top">
 				<center>
 					<strong>
 						<a title="Futsal home" style="font-family: Bahnschrift;font-size:50px;color: #000;" href="http://www.gofootsal.com">GoFutsal.com<sup style="font-size: 20px">&reg</sup></a>
-						<p><sup style="color: black;">for Kathmandu Valley</sup></p>
+						<sup style="color: black;">for Kathmandu Valley</sup>
 					</strong>
 				</center>
 				<span id="lang">
@@ -118,7 +122,7 @@
 					</select>
 				</span>
 				<div class="date">
-					Nepal(NP)<img src="images/nepal.jpg" width="20px" />
+					Nepal(NP)<img src="images/nav/nepal.jpg" width="20px" />
 				</div>
 
 
@@ -126,35 +130,35 @@
 				<!-- <span id="member">		
 					<a href=""><?php $firstname ?></a>
 				</span> -->
-<?php
-				if(loggedin()) {
-					$query = "SELECT `first_name` FROM `users` WHERE `id` = '".$_SESSION['user_id']."'";
-					if($query_run = mysqli_query($conn, $query)) {
-						if($mysqli_num_rows = mysqli_num_rows($query_run)) {
-							while($array = mysqli_fetch_assoc($query_run)) {
-								$firstname = $array['first_name'];
-?>
-								<div id="member">
-									<div class="btn-group user">
-									<button type="button" class="btn btn-danger dropdown-toggle user-name" data-toggle="dropdown"><a href=""><?php echo $firstname ?></a></button>		
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Settings</a>
-										<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Logout</a>
-										</div>
+				<?php
+								if(loggedIn()) {
+									$query = "SELECT `firstName` FROM `users` WHERE `id` = '".$_SESSION['userId']."'";
+									if($query_run = mysqli_query($conn, $query)) {
+										if($mysqli_num_rows = mysqli_num_rows($query_run)) {
+											while($array = mysqli_fetch_assoc($query_run)) {
+												$firstname = $array['first_name'];
+				?>
+												<div id="member">
+													<div class="btn-group user">
+													<button type="button" class="btn btn-danger dropdown-toggle user-name" data-toggle="dropdown"><a href=""><?php echo $firstname ?></a></button>		
+													<div class="dropdown-menu">
+														<a class="dropdown-item" href="#">Settings</a>
+														<div class="dropdown-divider"></div>
+															<a class="dropdown-item" href="#">Logout</a>
+														</div>
+													</div>
+												</div>
+								<?php 
+											}
+										}
+									}
+								}
+								else if(!loggedIn()) {
+									?>
+									<div id="member">
+										<button id="login">Login</button>
+										<button id="register">Register</button>
 									</div>
-								</div>
-<?php 
-							}
-						}
-					}
-				}
-				else if(!loggedin()) {
-?>
-					<div id="member">
-						<a class="btn btn-primary login" href="login/loginForm.php">Login</a>
-						<a class="btn btn-primary" href="register/register.php">Register</a>
-					</div>
 <?php
 				}
 				else {
@@ -180,13 +184,78 @@
 
 
 
-		<div class="body">
+		<div class="content">
+			<div class="login-form">
+				<h3 style="text-align: center;">Login</h3>
+				<form  action="authentication.php" method = "POST">
+				<center>
+					<table>	
+							<tr>
+								<td><label for="uname">Username</label></td>
+							</tr>										
+							<tr>
+								<td><input id="uname" type="text" name="uname" required="required" placeholder="Enter your username" /></td>
+							</tr>
+							<tr>
+								<td><label for="pwd">Password</label></td>
+							</tr>
+							<tr>
+								<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value="" required="required" /></td>
+							</tr>
+							<tr>
+								<td><input type="submit" name="submit" value="Let me in" /></td>
+							</tr>
+					</table>
+					</center>
+				</form>
+			</div>
+			<div class="register" style="display: none;">
+				<h3>Register</h3>
+				<form action="" method="POST">
+					<table>
+						<tr>
+							<td>Firstname</td>
+						</tr>
+						<tr>
+							<td><input id="fname" type="text" name="fname" value="" placeholder="Enter your firstname" required="required" /></td>
+						</tr>
+						<tr>
+							<td>Middlename</td>
+						</tr>
+						<tr>
+							<td><input id="mname" type="text" name="mname" placeholder="Enter your middlename" /></td>
+						</tr>
+						<tr>
+							<td>Lastname</td>
+						</tr>
+						<tr>
+							<td><input id="lname" type="text" name="lname" placeholder="Enter your lastname" required="required" /></td>
+						</tr>
+						<tr>
+							<td>Password</td>
+						</tr>
+						<tr>
+							<td><input id="lpwd" type="password" name="pwd" placeholder="Enter your password" required="required" /></td>
+						</tr>
+						<tr>
+							<td>Confirm password</td>
+						</tr>
+						<tr>
+							<td><input id="cpwd" type="password" name="cpwd" placeholder="Confirm your password" required="required" /></td>
+						</tr>
+						<tr>
+							<td><input type="submit" name="sbmt" value="Register" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+    
 			<div class="home">
 				<p style="text-align: center;font-size: 50px;">"Welcome to futsal World"</p>
 				<div class="left_home">
 					<span id="img">
-						<a href="images/messi.jpg" data-lightbox="CEO" data-title="CEO, Futsal Developement Program, Nepal">
-							<img src="images/messi.jpg" width="100px" height="100px" />
+						<a href="images/body/messi.jpg" data-lightbox="CEO" data-title="CEO, Futsal Developement Program, Nepal">
+							<img src="images/body/messi.jpg" width="100px" height="100px" />
 							<hr style="width:100px;" />
 							<p style="color: #000;font-family: Chiller;font-size: 20px;"><b>4-times Football Awards Winner</b></p>
 							<p style="color:#000;font-size: 30px"><b>--Lionel Messi</b></p>
@@ -229,9 +298,9 @@
 							<span style="color: #fff;font-family: Bahnschrift;font-size: 20px;">Some of the glimpses.</span>
 						</p>
 						<div id="slider">
-							<a href="images/goal.jpg" data-lightbox="pics" data-title="Futsal"><img src="images/goal.jpg" width="100px" height="100px" /></a>
-							<a href="images/hi-res-33b03d2441834e692497946ec5bf8cdf_crop_north.jpg" data-lightbox="pics" data-title="Futsal"><img src="images/hi-res-33b03d2441834e692497946ec5bf8cdf_crop_north.jpg" width="100px" height="100px" /></a>
-							<a href="images/hi-res-692aa20d167fb4238095cd980b0786b7_crop_north.jpg" data-lightbox="pics" data-title="Futsal"><img src="images/hi-res-692aa20d167fb4238095cd980b0786b7_crop_north.jpg" width="100px" height="100pxs" /></a>
+							<a href="images/body/goal.jpg" data-lightbox="pics" data-title="Futsal"><img src=" images/body/goal.jpg" width="100px" height="100px" /></a>
+							<a href=" images/body/hi-res-33b03d2441834e692497946ec5bf8cdf_crop_north.jpg" data-lightbox="pics" data-title="Futsal"><img src="images/body/hi-res-33b03d2441834e692497946ec5bf8cdf_crop_north.jpg" width="100px" height="100px" /></a>
+							<a href=" images/body/hi-res-692aa20d167fb4238095cd980b0786b7_crop_north.jpg" data-lightbox="pics" data-title="Futsal"><img src="images/body/hi-res-692aa20d167fb4238095cd980b0786b7_crop_north.jpg" width="100px" height="100pxs" /></a>
 						</div>
 						<div class="news" align="middle">
 							<p style="text-align: center;">Latest News and Transfers</p>
@@ -248,9 +317,9 @@
 			<div id="gallery">
 				<div id="photo_gallery">
 					<p style="font-size: 20px;text-align:center;"><b>Photo Gallery</b></p>
-					<a href="images/footsal.jpg" data-lightbox="gallery" data-title="One of the footsal grounds in Kathmandu Valley"><img src="images/footsal.jpg" width="200px" height="100px" /></a>
-					<a href="images/futsal1.jpg" data-lightbox="gallery" data-title="Playing in footsal ground in holidays"><img src="images/futsal1.jpg" width="200px" height="100px" /></a>
-					<a href="images/futsal3.jpg" data-lightbox="gallery" data-title="Futsal at night is awesome as heaven"><img src="images/futsal3.jpg" width="200px" height="100px" /></a>
+					<a href="images/body/footsal.jpg" data-lightbox="gallery" data-title="One of the footsal grounds in Kathmandu Valley"><img src="images/body/footsal.jpg" width="200px" height="100px" /></a>
+					<a href="images/body/futsal1.jpg" data-lightbox="gallery" data-title="Playing in footsal ground in holidays"><img src="images/body/futsal1.jpg" width="200px" height="100px" /></a>
+					<a href="images/body/futsal3.jpg" data-lightbox="gallery" data-title="Futsal at night is awesome as heaven"><img src="images/body/futsal3.jpg" width="200px" height="100px" /></a>
 				</div>
 				<hr style="border-width: 5px;" />	
 				<div id="videoclips">
@@ -264,7 +333,7 @@
 			<div id="about">
 				<div id="messageceo">
 					<p style="font-size: 20px;font-family: Lucida Handwriting;color: #1d247c;"><u>Message from CEO....</u></p>
-					<img src="images/CEO.jpg" width="150px" height="150px" />
+					<img src="images/body/CEO.jpg" width="150px" height="150px" />
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -276,7 +345,7 @@
 				</div>
 				<div id="managing-director">
 					<p style="font-family: Lucida Handwriting;color: #1d247c;"><u>Message from MD</u></p>
-					<img src="images/CEO.jpg" width="150px" height="150px" alt="Message Director" />
+					<img src="images/body/CEO.jpg" width="150px" height="150px" alt="Message Director" />
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -295,27 +364,39 @@
 		<div class="bottom">
 			<div style=" width: 1200px;margin: auto;height: 200px">
 			<span id="contactDetails">
-				<img src="images/telephoeLogo.png" /><u>01xxxxxxx</u>
-				<img src="images/mobileLogo.png" /><u>9xxxxxxxxxx</u>
+				<img src="images/bottom/telephoeLogo.png" /><u>01xxxxxxx</u>
+				<img src="images/bottom/mobileLogo.png" /><u>9xxxxxxxxxx</u>
 				<span>
 					<p style="color:#f7f7f7;">Please send us some feedback</p>
 					<a href="https://mail.google.com">gotofutsal@gmail.com</a>
 				</span>
 			</span>
 			<span id="social">
-				<a id="fb" title="facebook_page" target="_blank	" href="http://www.facebook.com/online_futsal"><img src="images/fb.png" alt="facebook" /></a>
-				<a id="tw" title="twitter_handler" target="_blank" href="http://www.twitter.com/online_futsal"><img src="images/twitter.jpg" alt="twitter" /></a>
+				<a id="fb" title="facebook_page" target="_blank	" href="http://www.facebook.com/online_futsal"><img src="images/bottom/socialMedia/fb.png" alt="facebook" /></a>
+				<a id="tw" title="twitter_handler" target="_blank" href="http://www.twitter.com/online_futsal"><img src="images/bottom/socialMedia/twitter.jpg" alt="twitter" /></a>
 			</span>
 			<div class="copyright" align="middle">
 				<p>&copy 2006-2017<a href="http://www.gofootsal.com"> GoFutsal.com</a>. All Rights Reserved</p>
 				<p>Kantipur Mall, Lalitpur</p>
 			</div>
 		</div>	
+		
+		<noscript>
+      		You need to enable JavaScript to run this app.
+    	</noscript>
+		<!-- ... other HTML ... -->
 
-		<script type="text/javascript" src="js/home.js"></script>
+  		<!-- Load React. -->
+  		<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  		<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript" src="js/lightbox.min.js"></script>
-
+  	
+	  	<script type="text/javascript" src="js/home.js"></script>
+	
 	</body>
 </html>

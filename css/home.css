@@ -1,16 +1,18 @@
-* {
+/* * 
+{
 	margin: 0px;
 	padding: 0px;
-}
-body, html {
+} */
+body, html 
+{
 	/* z-index: auto; */
 	height: auto;
 	width: 100%;
 	/*position: relative;*/
-	background-image: url('../images/maxresdefault.jpg');
-	background-attachment: fixed;
+	background: url('../images/body/maxresdefault.jpg') fixed;
 }
-.wrapper {
+.wrapper 
+{
 	z-index: 10000;
 	position: relative;
 	top: 0px;
@@ -25,16 +27,19 @@ body, html {
 		#808789
 	);
 }
-.wrapper .top sup {
+.wrapper .top sup 
+{
 	color: #000;
 }
-.wrapper .top #lang {
+.wrapper .top #lang 
+{
 	float: right;
 	position: absolute;
 	right: 150	px;
 	top: 10px;
 }
-.wrapper .top .date {
+.wrapper .top .date 
+{
 	float: right;
 	position: absolute;
 	top: 15px;
@@ -43,19 +48,22 @@ body, html {
 	overflow: hidden;
 }
 
-.wrapper .top #member {
+/* .wrapper .top #member 
+{
 	/* position: relative; */
 	/* background: #f2f4f3; */
-	float: right;
-	margin-top: -20px;
+	/* float: right; */
+	/* margin-top: -20px; */
 	/* padding-right: 30px; */
 	
-}
-.wrapper .top #member .btn {
+/* }  */
+.wrapper .top #member .btn 
+{
 	background-color: blue;
 	border: none;
 }
-.wrapper .nav {
+.wrapper .nav 
+{
 	height: 50px;
 	/*position: relative;*/
 	/*overflow: hidden;*/
@@ -64,18 +72,21 @@ body, html {
 	/*background-attachment: fixed;*/
 	/*position: fixed;*/
 }
-.wrapper .nav ul {
+.wrapper .nav ul 
+{
 	list-style: none;
 	position: fixed;
 }
-.nav ul li {
+.nav ul li 
+{
 	position: relative;
 	float: left;
 	/*left: 20px;*/
 	line-height: 10px;
 	width: 80px;	
 }
-.nav ul li a {
+.nav ul li a 
+{
 	transition-property: all;
 	transition-duration: 0.5s;
 	transition-timing-function: linear;
@@ -109,7 +120,8 @@ body, html {
 	display: block;
 	color: #000;
 }
-.wrapper .nav ul li a:hover {
+.wrapper .nav ul li a:hover 
+{
 	display: inline-block;
 	overflow: hidden;
 	background-color: #13287f;
@@ -117,7 +129,8 @@ body, html {
 	border-radius: 8px;
 	color: #f2f3f9;	
 }
-.wrapper .nav ul li .services {
+.wrapper .nav ul li .services 
+{
 	
 	background-color: #f2f4f3;
 	display: none;
@@ -127,34 +140,40 @@ body, html {
 	background-color: #f2f4f3;
 	width: auto;
 }
-.wrapper .nav ul li .services li {
+.wrapper .nav ul li .services li 
+{
 	/*display: block;*/
 	/*position: relative;*/
 	background-color: white;
 	width: auto;	
 }
-.wrapper .nav ul li:hover .services {
+.wrapper .nav ul li:hover .services 
+{
 	/*position: relative;*/
 	display: block;
 	width: 100px;
 }
-.wrapper .nav ul li:hover .services li a {
+.wrapper .nav ul li:hover .services li a 
+{
 	width: 100px;
 }
-.body {
+.content 
+{
 
 	width: 100%;
 	position: relative;
-	padding-top: 1000px;
+	/* padding-top: 1000px; */
 }
-.home {
+.home 
+{
 	padding-bottom: 400px;
 	margin-top: 300px;	
 	height: 200px;
 	width: 100%;
 	background: #fff;
 }
-.home .left_home {
+.home .left_home 
+{
 	float: left;
 	z-index: -1;
 	-webkit-column-count: 2;
@@ -177,57 +196,70 @@ body, html {
 	line-height: 21px;
 	margin-top: 50px;
 }
-.home .left_home #img a img {
+.home .left_home #img a img 
+{
 	border-radius: 100%;
 }
-.home .left_home #img a img:hover {
+.home .left_home #img a img:hover 
+{
 	box-shadow: 1px 1px 1px 1px grey;
 }
-.home .left_home p {
+.home .left_home p 
+{
 	margin-top: 10px;
 }
-.home .right_home {
+.home .right_home 
+{
 	background: #fff;
 	float: left;
 	width: 50%;
 	height: 100%;
 }
-.home .right_home #slider_news {
+.home .right_home #slider_news 
+{
 	margin-left: 60px;
 	padding: 10px;
 }
-.home .right_home #slider_news .news {
+.home .right_home #slider_news .news 
+{
 	height: 370px;
 	border: 0.5px solid grey;
 	background: #9da59e;
 }
-.home .right_home #slider_news .news p {
+.home .right_home #slider_news .news p 
+{
 	font-size: 25px;
 }
-.home .right_home #slider_news .news #first {
+.home .right_home #slider_news .news #first 
+{
 	border-radius: 20px;
 	height: 50px;
 	width: 350px;
 	background: #fff;
 }
-.home .right_home #slider_news .news #first a  {
+.home .right_home #slider_news .news #first a  
+{
 	color: #000;
 }
-.home .right_home #slider_news .news #first:hover {
+.home .right_home #slider_news .news #first:hover 
+{
 	box-shadow: 5px 5px 5px black;
 }
-#gallery {
+#gallery 
+{
 	/*padding: 5px;*/
 	background: #f9fcfa;
 	margin: 50px 150px 200px 0px;
 	height: auto;
 	width: 100%;
 }
-#gallery #photo_gallery {
+#gallery #photo_gallery 
+{
 	height: 200px;
 	padding: 5px;
 } 
-#about {
+#about 
+{
 /*	-webkit-column-count: 3;
 	-moz-column-count: 3;
 	-ms-column-count: 3;
@@ -242,36 +274,43 @@ body, html {
 	background: #fff;
 	height: 500px;
 }
-#about #messageceo {
+#about #messageceo 
+{
 	float: left;
 	margin: 20px;
 	width: 33.33%;
 	height: 500px;
 }
 
-.body #about #messageceo p {
+.body #about #messageceo p 
+{
 	padding: 14px;
 }
-.body #about #messageceo img {
+.body #about #messageceo img 
+{
 	border-radius: 100%;
 }
-.body #about #managing-director {	
+.body #about #managing-director 
+{	
 	float: left;
 	margin: 20px;
 	width: 33.33%;
 	height: 500px;
 }
-.body #about #managing-director p {
+.body #about #managing-director p 
+{
 	padding: 14px;
 }
 /* .body #about #managing-director 
 {
 	padding: 50px;
 } */
-.body #about #managing-director img {
+.body #about #managing-director img 
+{
 	border-radius: 100%;
 }
-.bottom {
+.bottom 
+{
 	position: fixed;
 	bottom: 0px;
 	height: 80px;
@@ -279,36 +318,44 @@ body, html {
 	background: -moz-linear-gradient(left, rgba(27,29,124,0.5), rgba(27,29,124,0.5));
 	clear: both;
 }
-.bottom #contactDetails {
+.bottom #contactDetails 
+{
 	float: right;	
 	padding: 10px;
 	margin: 0px 20px 20px 20px;
 }
-.bottom #contactDetails img {
+.bottom #contactDetails img 
+{
 	height: 30px;
 	width: 20px;	
 }
-.bottom #contactDetails u {
+.bottom #contactDetails u 
+{
 	color: #eff5f7;
 }
-.bottom #social {
+.bottom #social 
+{
 	float: right;
 	margin: 20px;
 }
-.bottom #social a img {
+.bottom #social a img 
+{
 	padding: 5px;
 	height: 30px;
 	width: 27px;	
 	border-radius: 100%;
 }
-.copyright, a  {
+.copyright, a  
+{
 	text-decoration: none;	
 	color: white;
 }
-.copyright a:hover {
+.copyright a:hover 
+{
 	color: #7e888c;
 }
-.copyright {
+.copyright 
+{
 	position: absolute;
 	left: 35%;
 	top: 40px;
