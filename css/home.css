@@ -1,8 +1,7 @@
-/* * 
-{
+*{
 	margin: 0px;
 	padding: 0px;
-} */
+} 
 body, html 
 {
 	/* z-index: auto; */
@@ -164,6 +163,24 @@ body, html
 	position: relative;
 	/* padding-top: 1000px; */
 }
+.login-form
+{
+	height: auto;
+	width: 400px;
+	background: white;
+	border-radius: 2%;
+	margin: 300px 0px 0px 500px;
+	padding: 20px;
+}
+.register
+{
+	height: auto;
+	width: 400px;
+	background: white;
+	border-radius: 2%;
+	margin: 300px 0px 0px 500px;
+	padding: 20px;
+}
 .home 
 {
 	padding-bottom: 400px;
@@ -315,8 +332,8 @@ body, html
 	bottom: 0px;
 	height: 80px;
 	width: 100%;
-	background: -moz-linear-gradient(left, rgba(27,29,124,0.5), rgba(27,29,124,0.5));
 	clear: both;
+	background: rgb(2,0,36);
 }
 .bottom #contactDetails 
 {

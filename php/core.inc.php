@@ -10,7 +10,7 @@
 
     function loggedIn() 
     {
-        if(isset($_SESSION['userId'])&&!empty($_SESSION['userId'])) {
+        if(isset($_SESSION['userId']) && !empty($_SESSION['userId'])) {
             return true;
         }
         else {

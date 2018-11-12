@@ -1,8 +1,7 @@
 <?php
 	require 'php/core.inc.php';
-	//require 'connection/connection.php';
 
-	$userIp = $_SERVER['REMOTE_ADDR'];
+	$userIp = $_SERVER["REMOTE_ADDR"];
 
 	function ipAdd() 
 	{
@@ -22,7 +21,7 @@
 
 	
 	function ipCheck()
-		{
+	{
 		global $conn, $userIp;
 		$query = "SELECT `ip` FROM `hitsIp`";
 		$queryRun = mysqli_query($conn, $query);
@@ -89,6 +88,73 @@
 			ipAdd();
 		}
 	}
+
+	if( isset( $_GET['mode']) == "auth" )
+	{  			
+		if ( $_SERVER["REQUEST_METHOD"] == "POST" ) 
+		{
+			$unameErr = $pwdErr = "";
+			$username = $password = "";
+			if (empty($_POST["uname"])) 
+			{
+				$unameErr = "Please enter username.";
+				echo '<script>',
+					'alert("Please enter username.")';
+			}
+			else 
+			{
+				$username = mysqli_real_escape_string($conn, $_POST['uname']);
+				if( empty($_POST["pwd"]))
+				{
+					$pwdErr = "Please enter password.";
+				}
+				else
+				{
+					$password = mysqli_real_escape_string($conn, $_POST['pwd']);
+					$password_hash = sha1($password);
+					$query = "SELECT `id` FROM `users` WHERE user_name='$username' AND pwd='$password_hash'";
+				
+					$query_run = mysqli_query($conn, $query);
+					
+					
+					if($query_run) 
+					{
+						$query_num_rows = mysqli_num_rows($query_run);
+							
+						if($query_num_rows == NULL) 
+						{
+							echo "Invalid username/password";
+						}
+						else if($query_num_rows == 1)
+						{
+							while($array = mysqli_fetch_assoc($query_run)) 
+							{
+								$user_id = $array['id'];
+								$_SESSION['user_id'] = $user_id;
+								header ('location:first.php');
+							}
+						}
+						else 
+						{
+							echo "No two same data";
+						}
+					}
+					else 
+					{
+					echo mysqli_error($conn);
+					// echo mysqli_error($q);
+					}
+				}
+				
+			}
+
+			
+			
+			
+		}
+	}
+
+
 ?>
 
 
@@ -185,27 +251,38 @@
 
 
 		<div class="content">
-			<div class="login-form">
+			<div class="login-form" style="display: none;">
 				<h3 style="text-align: center;">Login</h3>
-				<form  action="authentication.php" method = "POST">
-				<center>
-					<table>	
-							<tr>
-								<td><label for="uname">Username</label></td>
-							</tr>										
-							<tr>
-								<td><input id="uname" type="text" name="uname" required="required" placeholder="Enter your username" /></td>
-							</tr>
-							<tr>
-								<td><label for="pwd">Password</label></td>
-							</tr>
-							<tr>
-								<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value="" required="required" /></td>
-							</tr>
-							<tr>
-								<td><input type="submit" name="submit" value="Let me in" /></td>
-							</tr>
-					</table>
+				<form name="logInForm"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=auth" method="POST" onsubmit="return loginFormValidate()">
+					<center>
+						<table>	
+								<tr>
+									<td><label for="uname">Username</label></td>
+								</tr>										
+								<tr>
+									<td><input id="uname" type="text" name="uName" placeholder="Enter your username" autofocus /></td>
+								</tr>
+								<?php
+									if(isset($unameErr) && !empty($unameErr))
+									{
+								?>
+										<div class="errMessage">
+											<p style="color: red">Please enter your username.</p>
+										</div>
+								<?php
+									$unameErr = "";	
+									}
+								?>
+								<tr>
+									<td><label for="pwd">Password</label></td>
+								</tr>
+								<tr>
+									<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value=""  /></td>
+								</tr>
+								<tr>
+									<td><input type="submit" name="submit" value="Let me in" /></td>
+								</tr>
+						</table>
 					</center>
 				</form>
 			</div>
@@ -363,36 +440,30 @@
 
 		<div class="bottom">
 			<div style=" width: 1200px;margin: auto;height: 200px">
-			<span id="contactDetails">
-				<img src="images/bottom/telephoeLogo.png" /><u>01xxxxxxx</u>
-				<img src="images/bottom/mobileLogo.png" /><u>9xxxxxxxxxx</u>
-				<span>
-					<p style="color:#f7f7f7;">Please send us some feedback</p>
-					<a href="https://mail.google.com">gotofutsal@gmail.com</a>
+				<span id="contactDetails">
+					<img src="images/bottom/telephoeLogo.png" /><u>01xxxxxxx</u>
+					<img src="images/bottom/mobileLogo.png" /><u>9xxxxxxxxxx</u>
+					<span>
+						<p style="color:#f7f7f7;">Please send us some feedback</p>
+						<a href="https://mail.google.com">gotofutsal@gmail.com</a>
+					</span>
 				</span>
-			</span>
-			<span id="social">
-				<a id="fb" title="facebook_page" target="_blank	" href="http://www.facebook.com/online_futsal"><img src="images/bottom/socialMedia/fb.png" alt="facebook" /></a>
-				<a id="tw" title="twitter_handler" target="_blank" href="http://www.twitter.com/online_futsal"><img src="images/bottom/socialMedia/twitter.jpg" alt="twitter" /></a>
-			</span>
-			<div class="copyright" align="middle">
-				<p>&copy 2006-2017<a href="http://www.gofootsal.com"> GoFutsal.com</a>. All Rights Reserved</p>
-				<p>Kantipur Mall, Lalitpur</p>
+				<span id="social">
+					<a id="fb" title="facebook_page" target="_blank	" href="http://www.facebook.com/online_futsal"><img src="images/bottom/socialMedia/fb.png" alt="facebook" /></a>
+					<a id="tw" title="twitter_handler" target="_blank" href="http://www.twitter.com/online_futsal"><img src="images/bottom/socialMedia/twitter.jpg" alt="twitter" /></a>
+				</span>
+				<div class="copyright" align="middle">
+					<p>&copy 2006-2017<a href="http://www.gofootsal.com"> GoFutsal.com</a>. All Rights Reserved</p>
+					<p>Kantipur Mall, Lalitpur</p>
+				</div>
 			</div>
 		</div>	
 		
 		<noscript>
       		You need to enable JavaScript to run this app.
-    	</noscript>
-		<!-- ... other HTML ... -->
-
-  		<!-- Load React. -->
-  		<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-  		<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+		</noscript>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin></script>
-		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript" src="js/lightbox.min.js"></script>
   	

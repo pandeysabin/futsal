@@ -7,7 +7,7 @@
 <?php 
 
 	if (isset($_POST['submit'])) {
-        if(!empty($_POST['uname']&&!empty($_POST['pwd']))) {
+        if(!empty($_POST['uname'] && !empty($_POST['pwd']))) {
             $username = mysqli_real_escape_string($conn, $_POST['uname']);
             $password = mysqli_real_escape_string($conn, $_POST['pwd']);
             
