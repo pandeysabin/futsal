@@ -334,6 +334,7 @@ body, html
 	width: 100%;
 	clear: both;
 	background: rgb(2,0,36);
+	background: -webkit-rgb(2,0,36);
 }
 .bottom #contactDetails 
 {

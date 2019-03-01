@@ -1,5 +1,13 @@
 <?php
 	require 'php/core.inc.php';
+	$options = [
+		'cost' => 10,
+	];
+	$password_hash = password_hash("Ab_r$37849", PASSWORD_BCRYPT, $options);
+	echo $password_hash;
+	if (password_verify('Ab_r$37849', $password_hash )) {
+		echo "Password is valid.";
+	}
 
 	$userIp = $_SERVER["REMOTE_ADDR"];
 
@@ -9,43 +17,30 @@
 		$ip = $userIp;
 		$query = "INSERT INTO `hitsIp` VALUES('$ip')";
 		$queryRun = mysqli_query($conn, $query);
-		if($queryRun)
-		{
-			//
-		}
-		else
-		{
+		if ($queryRun) {
+			//  
 			echo mysqli_error($conn);
 		}
 	}
 
-	
 	function ipCheck()
 	{
 		global $conn, $userIp;
 		$query = "SELECT `ip` FROM `hitsIp`";
 		$queryRun = mysqli_query($conn, $query);
-		if(($queryRun)) 
-		{
-			if(mysqli_num_rows($queryRun) == NULL) 
-			{
+		if (($queryRun)) {
+			if (mysqli_num_rows($queryRun) == NULL) {
 				return true;
-			} 
-			else 
-			{
-				while($row = mysqli_fetch_assoc($queryRun)) 
-				{
+			} else {
+				while ($row = mysqli_fetch_assoc($queryRun)) {
 					$ip = $row['ip'];
-					if($userIp == $ip) 
-					{
+					if ($userIp == $ip) {
 						return false;
 					}
 				}
 				return true;
 			}
-		} 
-		else 
-		{
+		} else {
 			echo mysqli_error($conn);
 		}
 		
@@ -56,107 +51,197 @@
 		global $conn;
 		$query = "SELECT `counts` FROM `hitsCount`";
 		$queryRun = mysqli_query($conn, $query);
-		if($queryRrun) 
-		{
+		if ($queryRun) {
 			$row = mysqli_fetch_assoc($queryRun);
 			$count = $row['counts'];
 			$count = $count + 1;
 			$query1 = "UPDATE hitsCount SET counts = $count";
 			$queryRun1 = mysqli_query($conn, $query1);
-			if($queryRun1) 
-			{
+			if ($queryRun1) {
 				return true;
-			}
-			else 
-			{
+			} else {
 				echo mysqli_error($conn);
 			}
-
-		} 
-		else 
-		{
+		} else {
 			echo mysqli_error($conn);
 		}
 	}
 	// echo phpinfo();	 		
 
 
-	if(ipCheck()) 
-	{
-		if(updateCount())
-		{
+	if (ipCheck()) {
+		if (updateCount()) {
 			ipAdd();
 		}
 	}
 
-	if( isset( $_GET['mode']) == "auth" )
-	{  			
-		if ( $_SERVER["REQUEST_METHOD"] == "POST" ) 
-		{
-			$unameErr = $pwdErr = "";
-			$username = $password = "";
-			if (empty($_POST["uname"])) 
-			{
-				$unameErr = "Please enter username.";
-				echo '<script>',
-					'alert("Please enter username.")';
-			}
-			else 
-			{
-				$username = mysqli_real_escape_string($conn, $_POST['uname']);
-				if( empty($_POST["pwd"]))
-				{
-					$pwdErr = "Please enter password.";
-				}
-				else
-				{
-					$password = mysqli_real_escape_string($conn, $_POST['pwd']);
-					$password_hash = sha1($password);
-					$query = "SELECT `id` FROM `users` WHERE user_name='$username' AND pwd='$password_hash'";
-				
-					$query_run = mysqli_query($conn, $query);
-					
-					
-					if($query_run) 
-					{
-						$query_num_rows = mysqli_num_rows($query_run);
-							
-						if($query_num_rows == NULL) 
-						{
-							echo "Invalid username/password";
-						}
-						else if($query_num_rows == 1)
-						{
-							while($array = mysqli_fetch_assoc($query_run)) 
-							{
-								$user_id = $array['id'];
-								$_SESSION['user_id'] = $user_id;
-								header ('location:first.php');
-							}
-						}
-						else 
-						{
-							echo "No two same data";
-						}
-					}
-					else 
-					{
-					echo mysqli_error($conn);
-					// echo mysqli_error($q);
-					}
-				}
-				
-			}
+	if (isset($_GET['mode']) == "register") {
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			if (isset($_POST['sbmt'])) {
+				$fnameErr = $mnameErr = $lnameErr = $pwdErr = "";
+				$firstName = $_POST['fname']; 
+				$middleName = $_POST['mname'];
+				$lastName = $_POST['lname'];
+				$email = $_POST['email'];
+				$password = $_POST['pwd'];
+				$password_again = $_POST['cpwd'];
 
-			
-			
-			
+				if (!empty($firstName) && !empty($lastName) && !empty($email) && !empty($password) && !empty($password_again)) {
+					if ($password != $password_again) {
+						echo '<script>',
+							'alert("passwords didn\'t match.")',
+							'</script>';
+					} else {
+						$password_hash = sha1($password);
+						$query = "SELECT `emailid` FROM `udetails` WHERE `emailid`='$email'";
+						$query_run = mysqli_query($conn, $query);
+
+						if ($query_run) {
+							if (mysqli_num_rows($query_run) == 1) {
+								echo "It's already used sir. Please try another one.";
+							} else {
+								$insertQuery = "INSERT INTO `udetails` (fname, mname, lname, emailid, pwd) VALUES('$firstName', '$middleName', '$lastName', '$email', '$password_hash')";
+								$query_run = mysqli_query($conn, $insertQuery);
+
+								if ($query_run) {
+								?>
+									<div style="padding: 20px; margin: 10px;">
+										<h1>Congratulations, you're successfully register</h1>
+									</div>
+								<?php	
+								} else {
+									echo '<script>', 'alert("Query isn\'t being run.")', '</script>';
+								}
+							}
+						} else {
+							echo mysqli_error($conn);
+						}
+					}
+				} else {
+					echo '<script>',
+						'alert("Please enter all required fields if you really want to register for the futsal community.")',
+						'</script>';
+				}
+				// if (empty($_POST['fname'])) {
+				// 	$fnameErr = "Please enter your firstname.";
+				// 	echo '<script>', 'alert("Please enter firstname.")', '</script>';
+				// } else {
+				// 	$firstName = mysqli_real_escape_string($conn, $_POST['fname']);
+				// 	if (empty($_POST['mname'])) {
+				// 		if (empty($_POST['lname'])) {
+				// 			$lnameErr = "Please enter your lastname.";
+				// 			echo '<script>', 
+				// 				 'alert("Please enter lastname")', 
+				// 				 '</script>';
+				// 		} else {
+				// 			$lastName = mysqli_real_escape_string($conn, $_POST['lname']);
+				// 			if (isset($_POST['email']) && !empty($_POST['email'])) {
+				// 				echo "wassup";
+				// 				$email = mysqli_real_escape_string($conn, $_POST['email']);
+				// 			} else {
+				// 				echo '<script>', 'alert("Please enter valid email address.")', '</script>';
+				// 			}
+				// 			if (empty($_POST['pwd'])) {
+				// 					$pwdErr = "Please enter your password.";
+				// 					echo $email;
+				// 					echo '<script>', 'alert("Please enter your unique password.")', '</script>';
+				// 				} else {
+				// 					echo "wassup";
+				// 				}
+				// 			}
+				// 	} else {
+				// 		$middleName = mysqli_real_escape_string($conn, $_POST['mname']);
+				// 		if (empty($_POST['lname'])) {
+				// 			$lnameErr = "Please enter your lastname.";
+				// 			echo '<script',
+				// 				'alert("Please enter lastname")';
+				// 		} else {
+				// 			$lastName = mysqli_real_escape_string($conn, $_POST['lname']);
+				// 			if (empty($_POST['pwd'])) {
+				// 				//
+				// 			} else {
+				// 				echo "wassup";
+				// 			}
+				// 		}
+				// 	}
+				// }
+			}
 		}
 	}
 
+	# check if user wants to login and authenticate the user
+	if (isset($_GET['mode']) == "auth") {  			
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			if (isset($_POST["submit"])) {
+				$unameErr = $pwdErr = "";
+				$username = $password = "";
+				if (empty($_POST["uName"])) {
+					$unameErr = "Please enter username.";
+					echo '<script>',
+						'alert("Please enter username.")',
+						'</script>';
+				} else {
+					$username = mysqli_real_escape_string($conn, $_POST['uName']);
+					if (empty($_POST["pwd"])) {
+						$pwdErr = "Please enter password.";
+					} else {
+						$password = mysqli_real_escape_string($conn, $_POST['pwd']);
+						
+						$query = "SELECT `id`, `pwd` FROM `logInData` WHERE uname='$username'";
+						$query_run = mysqli_query($conn, $query);
+						
+						if ($query_run) {
+							$query_num_rows = mysqli_num_rows($query_run);
+								
+							if ($query_num_rows == NULL) {
+								echo "Invalid username";
+							} else if ($query_num_rows == 1) {
+								while ($array = mysqli_fetch_assoc($query_run)) {
+									$password_hash = $array['pwd'];
+									if (password_verify($password, $password_hash)) {
+										echo "Password is valid.";
+										$userId = $array['id'];
+										$_SESSION['userId'] = $userId;
+										header ('location:index.php');
+									}
+									
+								}
+							} else {
+								echo "No two same data";
+							}
+						} else {
+						echo mysqli_error($conn);
+						// echo mysqli_error($q);
+						}
+					}
+				}
+			}
+		}
+	}
 
+	# check if logout button is click and perform action according to it.
+	if (isset($_GET['mode']) == "logout") {
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			if (isset($_POST['logout'])) {
+				session_start();
+
+				$_SESSION = array();
+
+				if (ini_get("session.use_cookies")) {
+					$params = session_get_cookie_params();
+					setcookie(session_name(), '', time() - 4200,
+					$params["path"], $params["domain"],
+					$params["secure"], $params["httponly"]
+					);
+				}
+
+				// Finally, destroy the session.
+				session_destroy();
+
+			}
+		}
+	}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -170,8 +255,6 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/home.css">	
 	</head>
 	<body>
-		
-
 		<div class="wrapper">
 			<div class="top">
 				<center>
@@ -198,19 +281,22 @@
 				</span> -->
 				<?php
 								if(loggedIn()) {
-									$query = "SELECT `firstName` FROM `users` WHERE `id` = '".$_SESSION['userId']."'";
+									$query = "SELECT `fname` FROM `udetails` WHERE `id` = '".$_SESSION['userId']."'";
 									if($query_run = mysqli_query($conn, $query)) {
 										if($mysqli_num_rows = mysqli_num_rows($query_run)) {
 											while($array = mysqli_fetch_assoc($query_run)) {
-												$firstname = $array['first_name'];
+												$firstName = $array['fname'];
 				?>
 												<div id="member">
 													<div class="btn-group user">
-													<button type="button" class="btn btn-danger dropdown-toggle user-name" data-toggle="dropdown"><a href=""><?php echo $firstname ?></a></button>		
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#">Settings</a>
-														<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#">Logout</a>
+														<button type="button" class="btn btn-danger dropdown-toggle user-name" data-toggle="dropdown"><a href=""><?php echo $firstName ?></a></button>		
+														<div class="dropdown-menu">
+															<a class="dropdown-item" href="#">Settings</a>
+															<div class="dropdown-divider"></div>
+															<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>?mode=logout" method="POST">
+																<input type="submit" name="logout" value="Logout" class="dropdown-item">
+															</form>
+															
 														</div>
 													</div>
 												</div>
@@ -218,23 +304,21 @@
 											}
 										}
 									}
-								}
-								else if(!loggedIn()) {
+								} else if(!loggedIn()) {
 									?>
 									<div id="member">
 										<button id="login">Login</button>
 										<button id="register">Register</button>
 									</div>
-<?php
-				}
-				else {
-					echo mysqli_error($conn);
-				}
-?>
+			<?php
+								} else {
+									echo mysqli_error($conn);
+						}
+			?>
 			</div>
 			<div style="font-size:16px;" class="nav">
 				<ul>
-					<li><a title="Go To Home" href="#">Home</a></li>
+					<li><a title="Go To Home" href="<? echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>">Home</a></li>
 					<li><a title="Services" href="#">Services</a>
 							<ul class="services">
 								<li><a href="#">Booking</a></li>
@@ -253,15 +337,18 @@
 		<div class="content">
 			<div class="login-form" style="display: none;">
 				<h3 style="text-align: center;">Login</h3>
-				<form name="logInForm"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=auth" method="POST" onsubmit="return loginFormValidate()">
+				<form name="logInForm"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=auth" method="POST" >
 					<center>
-						<table>	
+						<table>
+							<div>
 								<tr>
 									<td><label for="uname">Username</label></td>
 								</tr>										
 								<tr>
-									<td><input id="uname" type="text" name="uName" placeholder="Enter your username" autofocus /></td>
+									<td><input id="uname" type="text" name="uName" placeholder="Enter your username" pattern="^[A-Za-z][A-Za-z0-9.-_]{6,15}$"  title="Please enter a valid username" required autofocus  /></td>
+									
 								</tr>
+							</div>
 								<?php
 									if(isset($unameErr) && !empty($unameErr))
 									{
@@ -277,7 +364,8 @@
 									<td><label for="pwd">Password</label></td>
 								</tr>
 								<tr>
-									<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" value=""  /></td>
+									<td><input id="pwd" type="password" name="pwd" placeholder="Enter your password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*?<>~`_]).{8,}$"  title="It should contain at least one uppercase letter, one lowercase letter, one digit and a special character i.e. 8 characters in total." required /></td>
+									
 								</tr>
 								<tr>
 									<td><input type="submit" name="submit" value="Let me in" /></td>
@@ -288,37 +376,49 @@
 			</div>
 			<div class="register" style="display: none;">
 				<h3>Register</h3>
-				<form action="" method="POST">
+				<form name="registerForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=register" method="POST">
 					<table>
 						<tr>
-							<td>Firstname</td>
+							<td><label for="fname">Firstname</label></td>
 						</tr>
 						<tr>
-							<td><input id="fname" type="text" name="fname" value="" placeholder="Enter your firstname" required="required" /></td>
+							<td><input id="fname" type="text" name="fname" value="<?php $firstName ?>" placeholder="Enter your firstname" autofocus /></td>
 						</tr>
 						<tr>
-							<td>Middlename</td>
+							<td><label for="mname">Middlename</label></td>
 						</tr>
 						<tr>
-							<td><input id="mname" type="text" name="mname" placeholder="Enter your middlename" /></td>
+							<td><input id="mname" type="text" name="mname" value="<?php $middleName ?>" placeholder="Enter your middlename" /></td>
 						</tr>
 						<tr>
-							<td>Lastname</td>
+							<td><label for="lname">Lastname</label></td>
 						</tr>
 						<tr>
-							<td><input id="lname" type="text" name="lname" placeholder="Enter your lastname" required="required" /></td>
+							<td><input id="lname" type="text" name="lname" value="<?php $lastName ?>" placeholder="Enter your lastname" /></td>
 						</tr>
 						<tr>
-							<td>Password</td>
+							<td><label for="email">E-mail</label></td>
 						</tr>
 						<tr>
-							<td><input id="lpwd" type="password" name="pwd" placeholder="Enter your password" required="required" /></td>
+							<td><input type="email" name="email" id="email" value="<?php $email ?>" placeholder="Enter your email" /></td>
 						</tr>
 						<tr>
-							<td>Confirm password</td>
+							<!-- <td><label for="uname">Username</label></td>		
 						</tr>
 						<tr>
-							<td><input id="cpwd" type="password" name="cpwd" placeholder="Confirm your password" required="required" /></td>
+							<td><input id="uname" type="text" name="uname" placeholder="Enter your username" required="required" /></td>
+						</tr> -->
+						<tr>
+							<td><label for="lpwd">Password</label></td>
+						</tr>
+						<tr>
+							<td><input id="lpwd" type="password" name="pwd" placeholder="Enter your password" /></td>
+						</tr>
+						<tr>
+							<td><label for="cpwd">Confirm password</label></td>
+						</tr>
+						<tr>
+							<td><input id="cpwd" type="password" name="cpwd" placeholder="Confirm your password" /></td>
 						</tr>
 						<tr>
 							<td><input type="submit" name="sbmt" value="Register" /></td>
@@ -435,9 +535,6 @@
 			</div>
 		</div>
 		
-
-
-
 		<div class="bottom">
 			<div style=" width: 1200px;margin: auto;height: 200px">
 				<span id="contactDetails">
@@ -449,21 +546,29 @@
 					</span>
 				</span>
 				<span id="social">
-					<a id="fb" title="facebook_page" target="_blank	" href="http://www.facebook.com/online_futsal"><img src="images/bottom/socialMedia/fb.png" alt="facebook" /></a>
-					<a id="tw" title="twitter_handler" target="_blank" href="http://www.twitter.com/online_futsal"><img src="images/bottom/socialMedia/twitter.jpg" alt="twitter" /></a>
+					<a id="fb" title="facebook_page" target="_blank	" href="https://www.facebook.com/online_futsal"><img src="images/bottom/socialMedia/fb.png" alt="facebook" /></a>
+					<a id="tw" title="twitter_handler" target="_blank" href="https://www.twitter.com/online_futsal"><img src="images/bottom/socialMedia/twitter.jpg" alt="twitter" /></a>
 				</span>
 				<div class="copyright" align="middle">
-					<p>&copy 2006-2017<a href="http://www.gofootsal.com"> GoFutsal.com</a>. All Rights Reserved</p>
+					<p>&copy 2006-2019<a href="http://www.gofootsal.com"> GoFutsal.com</a>. All Rights Reserved</p>
 					<p>Kantipur Mall, Lalitpur</p>
 				</div>
 			</div>
 		</div>	
+
+		<!-- <script type="text/javascript">
+			function abc() {
+				document.registerForm.method="post";
+				document.registerForm.action="index.php?mode=register";
+				document.registerForm.submit();
+			}
+		</script> -->
 		
 		<noscript>
       		You need to enable JavaScript to run this app.
 		</noscript>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin></script>
+		<script src="js/jquery.min.js" crossorigin></script>
 		<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript" src="js/lightbox.min.js"></script>
   	
