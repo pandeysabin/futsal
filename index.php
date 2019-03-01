@@ -65,8 +65,7 @@
 		} else {
 			echo mysqli_error($conn);
 		}
-	}
-	// echo phpinfo();	 		
+	} 		
 
 
 	if (ipCheck()) {
@@ -75,6 +74,7 @@
 		}
 	}
 
+	// Registering a user
 	if (isset($_GET['mode']) == "register") {
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			if (isset($_POST['sbmt'])) {
@@ -122,49 +122,6 @@
 						'alert("Please enter all required fields if you really want to register for the futsal community.")',
 						'</script>';
 				}
-				// if (empty($_POST['fname'])) {
-				// 	$fnameErr = "Please enter your firstname.";
-				// 	echo '<script>', 'alert("Please enter firstname.")', '</script>';
-				// } else {
-				// 	$firstName = mysqli_real_escape_string($conn, $_POST['fname']);
-				// 	if (empty($_POST['mname'])) {
-				// 		if (empty($_POST['lname'])) {
-				// 			$lnameErr = "Please enter your lastname.";
-				// 			echo '<script>', 
-				// 				 'alert("Please enter lastname")', 
-				// 				 '</script>';
-				// 		} else {
-				// 			$lastName = mysqli_real_escape_string($conn, $_POST['lname']);
-				// 			if (isset($_POST['email']) && !empty($_POST['email'])) {
-				// 				echo "wassup";
-				// 				$email = mysqli_real_escape_string($conn, $_POST['email']);
-				// 			} else {
-				// 				echo '<script>', 'alert("Please enter valid email address.")', '</script>';
-				// 			}
-				// 			if (empty($_POST['pwd'])) {
-				// 					$pwdErr = "Please enter your password.";
-				// 					echo $email;
-				// 					echo '<script>', 'alert("Please enter your unique password.")', '</script>';
-				// 				} else {
-				// 					echo "wassup";
-				// 				}
-				// 			}
-				// 	} else {
-				// 		$middleName = mysqli_real_escape_string($conn, $_POST['mname']);
-				// 		if (empty($_POST['lname'])) {
-				// 			$lnameErr = "Please enter your lastname.";
-				// 			echo '<script',
-				// 				'alert("Please enter lastname")';
-				// 		} else {
-				// 			$lastName = mysqli_real_escape_string($conn, $_POST['lname']);
-				// 			if (empty($_POST['pwd'])) {
-				// 				//
-				// 			} else {
-				// 				echo "wassup";
-				// 			}
-				// 		}
-				// 	}
-				// }
 			}
 		}
 	}
