@@ -2,7 +2,7 @@
 		require_once '../core.inc.php';
 ?>
 
-<!DOCTYPE <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />

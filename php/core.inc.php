@@ -3,7 +3,7 @@
     require 'connection/connection.php';
     $currentFile = $_SERVER["SCRIPT_NAME"];
 
-    if (isset($_SERVER['HTTP_SERVER'])) {
+    if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
         $httpReferer = $_SERVER['HTTP_REFERER'];
     }
 

@@ -1,10 +1,18 @@
 <?php
 	require 'php/core.inc.php';
+
+	$object = new Connection();
+
+
+    $path = htmlspecialchars($_SERVER['SCRIPT_NAME']);
+
 	$options = [
 		'cost' => 10,
 	];
 	$password_hash = password_hash("Ab_r$37849", PASSWORD_BCRYPT, $options);
+
 	echo $password_hash;
+
 	if (password_verify('Ab_r$37849', $password_hash )) {
 		echo "Password is valid.";
 	}
@@ -96,36 +104,44 @@
 				$password_again = $_POST['cpwd'];
 
 				if (!empty($firstName) && !empty($lastName) && !empty($email) && !empty($password) && !empty($password_again)) {
-					if ($password != $password_again) {
-						echo '<script>',
-							'alert("passwords didn\'t match.")',
-							'</script>';
-					} else {
-						$password_hash = sha1($password);
-						$query = "SELECT `emailid` FROM `udetails` WHERE `emailid`='$email'";
-						$query_run = mysqli_query($conn, $query);
+				    if (strlen($firstName) > 30 || strlen($middleName) > 30 || strlen($lastName) > 30) {
+				        echo 'please ahear to maxlength';
+                    } else {
+                        if ($password != $password_again) {
+                            echo '<script>',
+                            'alert("passwords didn\'t match.")',
+                            '</script>';
+                        } else {
+                            $password_hash = sha1($password);
+                            $query = "SELECT `emailid` FROM `udetails` WHERE `emailid`='$email'";
+                            $queryRun = mysqli_query($conn, $query);
 
-						if ($query_run) {
-							if (mysqli_num_rows($query_run) == 1) {
-								echo "It's already used sir. Please try another one.";
-							} else {
-								$insertQuery = "INSERT INTO `udetails` (fname, mname, lname, emailid, pwd) VALUES('$firstName', '$middleName', '$lastName', '$email', '$password_hash')";
-								$query_run = mysqli_query($conn, $insertQuery);
+                            if ($queryRun) {
+                                if (mysqli_num_rows($queryRun) == 1) {
+                                    echo "It's already used sir. Please try another one.";
+                                } else {
+                                    $fname = mysqli_real_escape_string($conn, $firstName);
+                                    $mname = mysqli_real_escape_string($conn, $middleName);
+                                    $lname = mysqli_real_escape_string($conn, $lastName);
+                                    $email = mysqli_real_escape_string($conn, $email);
 
-								if ($query_run) {
-								?>
-									<div style="padding: 20px; margin: 10px;">
-										<h1>Congratulations, you're successfully register</h1>
-									</div>
-								<?php	
-								} else {
-									echo '<script>', 'alert("Query isn\'t being run.")', '</script>';
-								}
-							}
-						} else {
-							echo mysqli_error($conn);
-						}
-					}
+                                    $sql = "INSERT INTO `udetails` (fname, mname, lname, emailid) 
+										VALUES('$fname', '$mname', '$lname', '$email')";
+                                    $query = mysqli_query($conn, $sql);
+
+                                    if ($query) {
+                                        # asking for username and password
+                                        header('location: $path');
+                                        exit;
+                                    } else {
+                                        echo '<script>', 'alert("Query isn\'t being run.")', '</script>' . mysqli_error($conn);
+                                    }
+                                }
+                            } else {
+                                echo mysqli_error($conn);
+                            }
+                        }
+                    }
 				} else {
 					echo '<script>',
 						'alert("Please enter all required fields if you really want to register for the futsal community.")',
@@ -193,6 +209,7 @@
 
 				$_SESSION = array();
 
+				# Logging out of the browser
 				if (ini_get("session.use_cookies")) {
 					$params = session_get_cookie_params();
 					setcookie(session_name(), '', time() - 4200,
@@ -261,7 +278,7 @@
 														<div class="dropdown-menu">
 															<a class="dropdown-item" href="#">Settings</a>
 															<div class="dropdown-divider"></div>
-															<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>?mode=logout" method="POST">
+															<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>?mode=logout" method="post">
 																<input type="submit" name="logout" value="Logout" class="dropdown-item">
 															</form>
 															
@@ -286,7 +303,7 @@
 			</div>
 			<div style="font-size:16px;" class="nav">
 				<ul>
-					<li><a title="Go To Home" href="<? echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>">Home</a></li>
+					<li><a title="Go To Home" href="<? echo $path; ?>">Home</a></li>
 					<li><a title="Services" href="#">Services</a>
 							<ul class="services">
 								<li><a href="#">Booking</a></li>
@@ -305,7 +322,7 @@
 		<div class="content">
 			<div class="login-form" style="display: none;">
 				<h3 style="text-align: center;">Login</h3>
-				<form name="logInForm"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=auth" method="POST" >
+				<form name="logInForm"  action="<?php echo $path; ?>?mode=auth" method="POST" >
 					<center>
 						<table>
 							<div>
@@ -344,34 +361,34 @@
 			</div>
 			<div class="register" style="display: none;">
 				<h3>Register</h3>
-				<form name="registerForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?mode=register" method="POST">
+				<form name="registerForm" action="<?php echo $path; ?>?mode=register" method="POST">
 					<table>
 						<tr>
 							<td><label for="fname">Firstname</label></td>
 						</tr>
 						<tr>
-							<td><input id="fname" type="text" name="fname" value="<?php $firstName ?>" placeholder="Enter your firstname" autofocus /></td>
+							<td><input id="fname" maxlength="15" type="text" name="fname" value="<?php if (isset($firstName)) { echo $firstName; } ?>" placeholder="Enter your firstname" autofocus /></td>
 						</tr>
 						<tr>
 							<td><label for="mname">Middlename</label></td>
 						</tr>
 						<tr>
-							<td><input id="mname" type="text" name="mname" value="<?php $middleName ?>" placeholder="Enter your middlename" /></td>
+							<td><input id="mname" maxlength="15" type="text" name="mname" value="<?php if (isset($middleName)) { echo $middleName; } ?>" placeholder="Enter your middlename" /></td>
 						</tr>
 						<tr>
 							<td><label for="lname">Lastname</label></td>
 						</tr>
 						<tr>
-							<td><input id="lname" type="text" name="lname" value="<?php $lastName ?>" placeholder="Enter your lastname" /></td>
+							<td><input id="lname" type="text" name="lname" value="<?php if (isset($lastName)) { echo $lastName; } ?>" placeholder="Enter your lastname" /></td>
 						</tr>
 						<tr>
 							<td><label for="email">E-mail</label></td>
 						</tr>
 						<tr>
-							<td><input type="email" name="email" id="email" value="<?php $email ?>" placeholder="Enter your email" /></td>
+							<td><input type="email" name="email" id="email" value="<?php if (isset($email)) { echo $email; } ?>" placeholder="Enter your email" /></td>
 						</tr>
 						<tr>
-							<!-- <td><label for="uname">Username</label></td>		
+							<!-- <td><label for="uname">Username</label></td>
 						</tr>
 						<tr>
 							<td><input id="uname" type="text" name="uname" placeholder="Enter your username" required="required" /></td>
