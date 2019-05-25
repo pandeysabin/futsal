@@ -8,11 +8,11 @@
         private $pdo;
 
         public function __construct() {
-            $this->host = 'localhost';
-            $this->dbUser = 'root';
+            $this->host = '';
+            $this->dbUser = '';
             $this->password = '';
-            $this->dbName = 'php_futsal';
-            $this->charset = 'utf8';
+            $this->dbName = '';
+            $this->charset = '';
 
             $dsn = 'mysql:host='.$this->host.';dbname='.$this->dbName.';charset='.$this->charset;
             try {
