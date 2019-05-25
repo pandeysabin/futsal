@@ -1,7 +1,7 @@
 <?php
 
-    require '../core.inc.php';
-    // require '../connection/connection.php';
+    require '../Session.inc.php';
+    // require '../connection/DatabaseConnection.php';
 ?>
 
 <?php 

@@ -1,10 +1,10 @@
 <?php
-	require 'php/core.inc.php';
+    require_once 'php/includes/DatabaseConnection.php';
+    require_once 'php/includes/RememberBrowser.php';
+	require_once 'php/includes/Session.inc.php';
 
-	$object = new Connection();
 
-
-    $path = htmlspecialchars($_SERVER['SCRIPT_NAME']);
+	$path = htmlspecialchars($_SERVER['SCRIPT_NAME']);
 
 	$options = [
 		'cost' => 10,
@@ -17,7 +17,8 @@
 		echo "Password is valid.";
 	}
 
-	$userIp = $_SERVER["REMOTE_ADDR"];
+	$checkIp = new RememberBrowser();
+//	$userIp = $_SERVER["REMOTE_ADDR"];
 
 	function ipAdd() 
 	{
@@ -265,7 +266,8 @@
 					<a href=""><?php $firstname ?></a>
 				</span> -->
 				<?php
-								if(loggedIn()) {
+                $checkLoggedIn = new Session();
+								if($checkLoggedIn->getSession()) {
 									$query = "SELECT `fname` FROM `udetails` WHERE `id` = '".$_SESSION['userId']."'";
 									if($query_run = mysqli_query($conn, $query)) {
 										if($mysqli_num_rows = mysqli_num_rows($query_run)) {
@@ -289,7 +291,7 @@
 											}
 										}
 									}
-								} else if(!loggedIn()) {
+								} else if(!$checkLoggedIn->getSession()) {
 									?>
 									<div id="member">
 										<button id="login">Login</button>
@@ -486,9 +488,8 @@
 				<hr style="border-width: 5px;" />	
 				<div id="videoclips">
 					<p style="font-size: 20px;text-align: center;"><b>Video Gallery</b></p>
-					<iframe width="500" height="315" src="https://www.youtube.com/embed/MoHnffhBwqs" frameborder="0" allowfullscreen></iframe>
-					<iframe width="500" height="315" src="https://www.youtube.com/embed/0j1B1eStj3k" frameborder="0" allowfullscreen></iframe>
-					<iframe src="https://www.youtube.com/embed/HcwfIU9uFlY" width="500" height="315" frameborder="0" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/fvjpE_wFL5A?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/mJ9oQ-ACgjs?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>					<iframe src="https://www.youtube.com/embed/HcwfIU9uFlY" width="500" height="315" frameborder="0" allowfullscreen></iframe>
 
 				</div>
 			</div>
@@ -553,7 +554,7 @@
       		You need to enable JavaScript to run this app.
 		</noscript>
 
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<script src="js/jquery.min.js" crossorigin></script>

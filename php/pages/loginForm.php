@@ -1,5 +1,5 @@
 <?php
-		require_once '../core.inc.php';
+		require_once '../Session.inc.php';
 ?>
 
 <!DOCTYPE html>

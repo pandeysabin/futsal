@@ -1,5 +1,5 @@
 <?php 
-	require "../core.inc.php";
+	require "../Session.inc.php";
 
 	if(loggedin() == true) {
 		header('location:../message.php');

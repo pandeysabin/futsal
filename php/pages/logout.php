@@ -1,5 +1,5 @@
 <?php
-    require '../core.inc.php';
+    require '../Session.inc.php';
 
     session_destroy();
     echo 'You\'re loggedout';
